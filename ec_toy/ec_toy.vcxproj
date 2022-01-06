@@ -154,12 +154,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ec_toy.cpp" />
+    <ClCompile Include="EllipticCurveToy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="botan.dll">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DeploymentContent>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="EllipticCurveToy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
