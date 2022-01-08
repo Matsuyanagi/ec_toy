@@ -29,6 +29,9 @@
     <None Include="botan.dll">
       <Filter>dll</Filter>
     </None>
+    <None Include="botan_debug.dll">
+      <Filter>dll</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EllipticCurveToy.h">
