@@ -24,6 +24,9 @@ public:
 	// y^2 = x^3 + ax + b (mod prime) の点 (x, y) を求める
 	static std::vector<Botan::PointGFp> GetNPoints( const Botan::BigInt &a, const Botan::BigInt &b, const Botan::BigInt &prime );
 
+	// それぞれの点 P の 2P, 3P, 4P,... をリスト化する
+	static std::vector<Botan::PointGFp> GetMultiplyPoints( const Botan::PointGFp &point );
+
 private:
 	BigIntSqrtTableType sqrt_table;
 

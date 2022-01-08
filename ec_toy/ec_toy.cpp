@@ -15,5 +15,17 @@ int main() {
 		std::cout << EllipticCurveToy::StringPointGFp( point ) << std::endl;;
 	}
 
+    // それぞれの点 P の 2P, 3P, 4P,... をリストにとって表示
+    for ( auto &&point : points ) {
+        std::vector<Botan::PointGFp> npoints = EllipticCurveToy::GetMultiplyPoints( point );
+
+		std::cout << npoints.size() << " : ";
+        for ( auto &&npoint : npoints ) {
+            std::cout << EllipticCurveToy::StringPointGFp( npoint );
+        }
+		std::cout << std::endl;
+	}
+
+
     return 0;    
 }

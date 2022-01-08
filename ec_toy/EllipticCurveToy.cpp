@@ -65,4 +65,21 @@ std::vector<PointGFp> EllipticCurveToy::GetNPoints( const BigInt &a, const BigIn
 	return points;
 }
 
+// それぞれの点 P の 2P, 3P, 4P,... をリスト化する
+// @param point 点
+// @return P, 2P, 3P, ... リスト。最後のゼロ点は含まない。
+std::vector<Botan::PointGFp> EllipticCurveToy::GetMultiplyPoints( const Botan::PointGFp &point )
+{
+	std::vector<BigInt> workspace( Botan::PointGFp::WORKSPACE_SIZE );
+	std::vector<PointGFp> points;
+
+	PointGFp ans = point;
+	while ( !ans.is_zero() ) {
+		points.emplace_back( ans );
+		ans.add( point, workspace );
+	}
+	points.emplace_back( ans );
+
+	return points;
+}
 
