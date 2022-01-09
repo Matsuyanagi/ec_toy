@@ -78,12 +78,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(BOOST_ROOT);$(ProgramData)\botan\debug\include\botan-3;$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_ROOT);$(ProgramData)\botan\debug\include\botan-3;$(SolutionDir)fmt\include;$(IncludePath)</IncludePath>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(BOOST_ROOT);$(ProgramData)\botan\include\botan-3;$(IncludePath)</IncludePath>
+    <IncludePath>$(BOOST_ROOT);$(ProgramData)\botan\include\botan-3;$(SolutionDir)fmt\include;$(IncludePath)</IncludePath>
     <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\fmt\src\format.cc" />
     <ClCompile Include="ec_toy.cpp" />
     <ClCompile Include="EllipticCurveToy.cpp" />
   </ItemGroup>

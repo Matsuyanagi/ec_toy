@@ -2,18 +2,20 @@
 #include <string>
 #include <vector>
 #include <exception>
-#include <boost/format.hpp>
+#include <fmt/core.h>
+#include <botan/numthry.h>
+#include <botan/chacha_rng.h>
 
 #include "EllipticCurveToy.h"
 
 using namespace Botan;
-using namespace boost;
 
 int main() {
 
     BigInt a("1");
     BigInt b("1");
     BigInt prime("11");
+    ChaCha_RNG rng;
 
     if ( __argc > 1 ) {
         a = BigInt(__argv[1]);
@@ -27,9 +29,13 @@ int main() {
 
     // discriminant_ok のテスト
     if ( ! EllipticCurveToy::discriminant_ok(a, b, prime) ) {
-        std::cout << boost::format( "discriminant error : a = %1% , b = %2% , prime = %3% " ) % a.to_dec_string() % b.to_dec_string() % prime.to_dec_string() << std::endl;
+        std::cout << fmt::format( "discriminant error : a = {} , b = {} , prime = {} ", a.to_dec_string(), b.to_dec_string(), prime.to_dec_string() ) << std::endl;
         return 1;
     }
+    std::cout << fmt::format( "a = {} , b = {} , prime = {}", a.to_dec_string(), b.to_dec_string(), prime.to_dec_string() ) << std::endl;
+    // a, b, prime を指定して位数を求める
+    int64_t order_count = EllipticCurveToy::GetOrderCount( a, b, prime );
+	std::cout << fmt::format( "order : {}" , order_count ) << std::endl;
 
     // y^2 = x^3 + ax + b (mod prime) の点 (x, y) を求める
     std::vector<PointGFp> points = EllipticCurveToy::GetNPoints( a, b, prime );
@@ -48,9 +54,27 @@ int main() {
 		std::cout << std::endl;
 	}
 
-    // a, b, prime を指定して位数を求める
-    int64_t order_count = EllipticCurveToy::GetOrderCount( a, b, prime );
-	std::cout << boost::format( "order : %1%" ) % order_count << std::endl;
+    std::cout << "a\\b\t";
+    for ( int64_t a = 0; a < prime; a++ ) {
+        std::cout << a << "\t";
+    }
+	std::cout << std::endl;
+    for ( int64_t a = 0; a < prime; a++ ) {
+        std::cout << a << "\t";
+        for ( int64_t b = 0; b < prime; b++ ) {
+            if ( EllipticCurveToy::discriminant_ok(a, b, prime) ) {
+                BigInt order_count = EllipticCurveToy::GetOrderCount( a, b, prime );
 
+                if ( Botan::is_prime(order_count, rng ) ) {
+                    std::cout << "[" << order_count << "]" << "\t";
+                } else {
+                    std::cout << order_count << "\t";
+                }
+            }else{
+                std::cout << "-\t";
+            }
+        }
+		std::cout << std::endl;
+    }
     return 0;    
 }

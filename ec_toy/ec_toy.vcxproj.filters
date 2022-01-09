@@ -24,6 +24,9 @@
     <ClCompile Include="EllipticCurveToy.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="..\fmt\src\format.cc">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="botan.dll">
