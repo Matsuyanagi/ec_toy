@@ -48,6 +48,9 @@ int main() {
 		std::cout << std::endl;
 	}
 
+    // a, b, prime を指定して位数を求める
+    int64_t order_count = EllipticCurveToy::GetOrderCount( a, b, prime );
+	std::cout << boost::format( "order : %1%" ) % order_count << std::endl;
 
     return 0;    
 }

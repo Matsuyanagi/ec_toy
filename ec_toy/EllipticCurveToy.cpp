@@ -33,7 +33,7 @@ std::string EllipticCurveToy::StringPointGFp( const PointGFp &p ) {
 	return s;
 }
 
-// y^2 = x^3 + ax + b (mod prime) の点 (x, y) を求める
+// y^2 = x^3 + ax + b (mod prime) の点群 (x, y) を求める
 std::vector<PointGFp> EllipticCurveToy::GetNPoints( const BigInt &a, const BigInt &b, const BigInt &prime )
 {
 	// 平方根テーブル
@@ -45,13 +45,12 @@ std::vector<PointGFp> EllipticCurveToy::GetNPoints( const BigInt &a, const BigIn
 	CurveGFp curve( prime, a, b );
 
 	for ( BigInt i = 0; i < prime; i++ ) {
-		BigInt y2 = i * i * i + curve.get_a() * i + curve.get_b();
-		y2 %= curve.get_p();
-		if ( sqrt_table.contains( y2 ) ) {
-			BigInt y = sqrt_table[ y2 ];
+		BigInt y2 = i * i * i + a * i + b;
+		y2 %= prime;
+		if ( auto it = sqrt_table.find( y2 ); it != sqrt_table.end() ) {
+			const BigInt y = it->second;
 
-			PointGFp point( curve, i, y );
-			points.push_back( point );
+			points.push_back( PointGFp( curve, i, y ) );
 			if ( y != 0 ) {
 				PointGFp point( curve, i, prime - y );
 				points.push_back( point );
@@ -82,4 +81,33 @@ std::vector<Botan::PointGFp> EllipticCurveToy::GetMultiplyPoints( const Botan::P
 
 	return points;
 }
+
+// a, b, prime を指定して位数を求める
+int64_t EllipticCurveToy::GetOrderCount( const Botan::BigInt &a, const Botan::BigInt &b, const Botan::BigInt &prime )
+{
+	if ( ! discriminant_ok( a, b, prime ) ){
+		return 0;
+	}
+	
+	const BigIntSqrtTableType sqrt_table = CreateSqrtTable( prime );
+	int64_t order = 0;
+
+	for ( Botan::BigInt i = 0; i < prime; i++ ) {
+		Botan::BigInt y2 = i * i * i + a * i + b;
+		y2 %= prime;
+		if ( sqrt_table.contains( y2 ) ) {
+			Botan::BigInt y = sqrt_table.at( y2 );
+
+			order++;
+			if ( y.is_nonzero() ) {  //	y != 0 なら -y もカウントする
+				order++;
+			}
+		}
+	}
+	order++;  // O : 無限点 O
+
+	return order;
+
+}
+
 

@@ -112,3 +112,13 @@ TEST( TestEllipticCurveToy, AddPoints_13 ) {
 		i++;
 	}
 }
+
+TEST( TestEllipticCurveToy, Order ) {
+
+	EXPECT_EQ( 14, EllipticCurveToy::GetOrderCount( 1, 1, 11 ) );
+	EXPECT_EQ( 18, EllipticCurveToy::GetOrderCount( 1, 1, 13 ) );
+	EXPECT_EQ( 35, EllipticCurveToy::GetOrderCount( 1, 1, 41 ) );
+	EXPECT_EQ( 987, EllipticCurveToy::GetOrderCount( 1, 1, 977 ) );
+
+
+}

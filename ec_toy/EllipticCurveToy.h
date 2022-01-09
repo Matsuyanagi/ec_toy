@@ -27,6 +27,10 @@ public:
 	// それぞれの点 P の 2P, 3P, 4P,... をリスト化する
 	static std::vector<Botan::PointGFp> GetMultiplyPoints( const Botan::PointGFp &point );
 
+	// a, b, prime を指定して位数を求める
+	static int64_t GetOrderCount( const Botan::BigInt &a, const Botan::BigInt &b, const Botan::BigInt &prime );
+	
+
 private:
 	BigIntSqrtTableType sqrt_table;
 
